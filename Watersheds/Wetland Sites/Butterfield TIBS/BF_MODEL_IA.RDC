@@ -1,0 +1,26 @@
+file format : IDRISI Raster A.1
+file title  : 
+data type   : real
+file type   : ascii
+columns     : 122
+rows        : 105
+ref. system : utm-18n
+ref. units  : m
+unit dist.  : 10.0000000
+min. X      : 434154.4367813
+max. X      : 435374.4367813
+min. Y      : 4912156.2695684
+max. Y      : 4913206.2695684
+pos'n error : unknown
+resolution  : 10.0000000
+min. value  : -9999.0000000
+max. value  : 87.4000015
+display min : 74.4000015
+display max : 87.4000015
+value units : unspecified
+value error : unknown
+flag value  : -9999.0000000
+flag def'n  : Background
+legend cats : 0
+lineage     : This file was created by the CONVERT module with the command line: 
+lineage     : 1*C:\Users\Alex Looi\Desktop\Watersheds\BF\BF_Model_I.rst*C:\Users\Alex Looi\Desktop\Watersheds\BF_MODEL_IA.rst*2*1*1
