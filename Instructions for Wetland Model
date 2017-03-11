@@ -46,8 +46,9 @@ Wetland-Model folder:
 	sensitivity analysis code called "Wetland Model Sensitivity" (.R file version 2.3), 
 	a .R file to "Plot Distance from River and Watershed Size" (.R file), code to 
 	calculate Nash-Sutcliffe efficiencies called "Nash_Sutcliffe" (.R file),
-	and a .R file that contains all the plotting functions. Lastly, there is a folder
-	called "Watersheds."
+	functions used to plot output files in "TIBS Wetland Model Plotting Functions 
+	v1.R" and a .R file that contains all the plotting functions. Lastly, there 
+	is a folder called "Watersheds." 
 
 ------------------------------------------------------------------------------------------
 
@@ -59,8 +60,10 @@ Watersheds folder:
 		estimating wetland water level in sites without WCS. Columns show parameters
 		for each site (sites are abbreviated). The first row of values in this file 
 		contain the linear model slope for each site, the second row show the intercept.
-		The wetland model v3.1 reads in this file and uses these values. see file to
-		to see structure and formatting of .
+		The wetland model v3.1 reads in this file and uses these values. All output data
+		and figures created by the model are stored directly in this folder, or the model
+		creates a folder with an appropriate name and stores a created plot in newly created
+		folder.
 		
 		Wetland Parameters.csv - This file contains:
 			AOW.cell - area of water in raster cells
@@ -167,8 +170,13 @@ Wetland Sites Folder:
 
 Running the Wetland Model:
 	This model was built using R studio v3.1 and last tested on R version 3.3.2
-	
-  
+
+To run this model make sure the file structure of input files is the same as it appears in 
+GitHub. Then if files and folder are where they should be simply open "TIBS Wetland Model
+v3.1" in Rstudio and click the "source" button (usually located in the topright corner of 
+the script editer. The model takes about 5 min to run for all sites and all time segments.
+The model should indicate in the R Console which time segment and wetland site is being
+simulated.
 		
 		 
 		
