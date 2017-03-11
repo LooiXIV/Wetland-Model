@@ -1,0 +1,181 @@
+Instructions for using the TIBS Wetland Model
+------------------------------------------------------------------------------------------
+##########################################################################################
+------------------------------------------------------------------------------------------
+
+Site Abbreviations:Plum Tree-PT, Dorr Road-DR, Delaney Branch-DL,
+				   Deferno Branch-DB, Carpenter's Branch-CB, Butterfield-BF
+------------------------------------------------------------------------------------------
+
+Brief description of Model and its products:
+
+This model is an intuitive mass balance model which strives to capture the water 
+budget dynamics, phosphorus dynamics, and nitrogen dynamics. It uses pre-simulated 
+daily GWLF runoff, daily precipitation, daily min and max temperature, daily
+St. Lawrence water-level, and daily wetland site specific water-level management
+plan, data as input in the form of a comma separated values table (.csv). 
+The model outputs daily estimates of:
+		daily dilution rate, daily outflow, daily simulated peak volume, estimated
+        next day volume, daily ET, daily EV, estimated daily peak water level,
+        estimated daily next day water level, daily phosphorus concentration,
+        daily total phosphorus, daily total mass of phosphorus, daily GWLF estimated 
+        phosphorus concentration, daily nitrogen concentration, daily total nitrogen, 
+        daily GWLF estimated nitrogen concentration, average daily water level,
+        daily inflow, mean daily precipitation, total inflow, total backflow 
+        (flow reversal)
+These data outputs as a daily data in a .csv file. In addition, several summary plots
+of daily dilution rate, daily outflow, daily phosphorus concentration, daily nitrogen 
+concentration, average daily water level, total inflow, total backflow (flow reversal).
+These daily data and summary plots should be interpreted with caution since GWLF 
+operates best at a biweekly (every two week) to monthly time step, and does not always
+perform well at a daily time step. Therefore, this code also produces monthly means of 
+the aforementioned daily summary plots (more descriptions in the plotting section).
+
+------------------------------------------------------------------------------------------
+Folder Structure:
+
+There is a specific folder structure that must be followed for the model to successfully
+run. The folder structure is more important for the model inputs than it is for the
+model outputs. The main folder that contains everything is called "Wetland-Model."
+All files and folders in the current configuration are required to reproduce 
+
+------------------------------------------------------------------------------------------
+
+Wetland-Model folder:
+	This folder contains the main "TIBS Wetland Model" (.R file version 3.1), 
+	sensitivity analysis code called "Wetland Model Sensitivity" (.R file version 2.3), 
+	a .R file to "Plot Distance from River and Watershed Size" (.R file), code to 
+	calculate Nash-Sutcliffe efficiencies called "Nash_Sutcliffe" (.R file),
+	and a .R file that contains all the plotting functions. Lastly, there is a folder
+	called "Watersheds."
+
+------------------------------------------------------------------------------------------
+
+Watersheds folder:
+	This folder contains four folders and three files. The files consist of:
+		Waterlevel lm parameters.csv - a file that contains the linear model relationships
+		between wetland site water level and the St. Lawrence River water level in sites
+		that do not have water control structures (WCS). This file is crucial for 
+		estimating wetland water level in sites without WCS. Columns show parameters
+		for each site (sites are abbreviated). The first row of values in this file 
+		contain the linear model slope for each site, the second row show the intercept.
+		The wetland model v3.1 reads in this file and uses these values. see file to
+		to see structure and formatting of .
+		
+		Wetland Parameters.csv - This file contains:
+			AOW.cell - area of water in raster cells
+			TA.cell - total area of wetlands in raster cells
+			AOW - Area of water in meters squared
+			TA - Total Area in meters squared
+			p.h - starting plank height of a WCS if a site has a WCS each day
+					(this variable is changed by the model daily and is different
+					from i.ph which is not changed daily, in meters IGLD)
+			is.WCS - boolean showing TRUE if a WCS is present and FALSE otherwise
+			L - length of the WCS structure weir opening (in inches)
+			i.ph - starting plank height of WCS if one is present in meters IGLD
+			i.P - initial Phosphorus concentration in kg per Liter
+			i.N - initial Nitrogen concentration in kg per Liter
+		This file gives wetland area (used in calculating precipitation water input)
+		and initial starting conditions for each wetland site. If you wish to change
+		initial conditions of the model do so here.
+		
+		Field Nutrient Data folder - This folder contains surface water concentrations
+		of nitrogen and phosphorus. For each site there are two csv files: 1) "__ 
+		Nutrient Field Data.csv" the raw field data. 2) "__ Monthly Mean Nutrient 
+		Field Data.csv" values in this table are used to plot against the monthly
+		phosphorus or nitrogen concentrations estimated by the model (units are
+		micromoles per liter). The blanks in 1) and 2) are corresponding wetland
+		site abbreviations.
+				
+		Water level Management Plans folder: There are csv files in this folder.
+		Each csv file contains the water management of sites with WCS for a simulated
+		time frame. Each row in the file indicates how many cm the WCS weir was raised 
+		or lowered each day for the entire simulated period.
+		
+		Wetland Model Weather folder: This folder contains weather data (Wetland 
+		Model Data ____-____.csv). Each file has daily data for precipitation
+		(mm) daily max and min temperature (degrees C), and water level for a 
+		simulated time period (the start and end years denoted by the blanks in 
+		the example csv file). It is important that the dates of these files match 
+		the dates of the water level management file. 
+		
+		WL Seasons ____-____.csv files are used to sort water level simulated by the
+		model into ascending, descending, or plateau limbs. These are instances when
+		water level is rising, descending or plateauing in the St. Lawrence River.
+		These files are not currently used in version 3.1 of the model.
+		
+		Wetland Sites Folder: This is a larger folder that contains data pertaining
+		to each wetland site. Because there is a lot of data in this folder it will
+		get its own section
+
+------------------------------------------------------------------------------------------
+	
+Wetland Sites Folder:
+	Generally, this folder contains a folder for each wetland site and two stand alone
+	files. 1) a Wetland Attributes Table.csv and 2) a Years Modeled Table.csv.
+		
+		Wetland Attributes Table.csv - This files contains the total watershed area
+		in square meters (WS.area) and distance to the St. Lawrence River (Dist.TR)
+		in meters. This file is not used directly in the wetland model, but is used
+		by the "Plot Distance to River and Watershed Size.R" file.
+		
+		Years Modeled Table.csv - This file simply contains the years and segments
+		that are modeled by the wetland model version 3.1. The file is read in by the 
+		model. The file also labels the start and end years, whether the time segment
+		was a high or low precipitation time segment pre or post MSD.
+			Examples: Pre.MSD.S - pre-MSD start year, Post.MSD.E - post-MSD End Year
+			High.Prcp years with high precipitation.
+			
+	Wetland Site folders: Butterfield TIBS, Carpenters TIBS, Deferno TIBS, Delaney TIBS, 
+	DorrRoad TIBS, Plum Tree TIBS.
+		All these folder contain essentially the same items.
+		
+		The .gms file - This is a file generated by the GWLF model for use in simulating
+		watershed runoff for each wetland site. 
+		
+		Site Abr. file with no extension - This is another important file generated 
+		by the GWLF model for use in simulating water runoff for each wetland site.
+		
+		__ Nutrient field Data.csv - Values in this table are used to plot against 
+		the monthly phosphorus or nitrogen concentrations estimated by the model 
+		(units are micromoles per liter). Blanks represent the site abbreviations.
+		
+		__ Vol cs WL.csv - This file is read in by the model and is used to convert
+		water level in the wetland to water volume in the wetland. Because each
+		wetland is at a different elevation and have different bathymetric contours
+		these tables are different for each site. These tables are very important in
+		calculating inflow, outflows, and dilution rates from the wetland. Blanks
+		represent the site abbreviations.
+		
+		*SITE*_Model_IA.RDC - This is meta data file typically read by GIS or IDRISI.
+		The wetland model does not read this in. *SITE* represents site abbreviations.
+		
+		*SITE*_MODEL_IA.RST - This is the accompanying raster file to the .RDC meta
+		data file. This file is not used in the wetland model. *SITE* represents 
+		site abbreviations.
+		
+	GWLF input to wetland model folder - This folder contains simulated raw daily 
+	GWLF data. The model will automatically search this specific folder (provided
+	the folder is the correct place) for the appropriate start and end years (these
+	start and end years are controlled by the user in the Years Modeled Table.csv
+	file or can be controlled in the R script itself).
+	In each file, rows represent specific simulated days and each column represents
+	simulated data generated by GWLF. Not all columns are used in the wetland model.
+	Only "Daily Prec (cm)", "Daily Flow (m^3)", "TP (kg)" and "TN (kg)" columns are
+	used. There should be a separate csv for each time segment to be modelled.
+------------------------------------------------------------------------------------------
+
+Running the Wetland Model:
+	This model was built using R studio v3.1 and last tested on R version 3.3.2
+	
+  
+		
+		 
+		
+		
+		
+	
+		
+		 
+		
+		
